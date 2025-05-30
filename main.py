@@ -14,9 +14,18 @@ def gui(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     
     def get_selected_area_text(img_path):
-        tb = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area")
-        page.add(tb)
-        tb.value = get_image_text(img_path)
+        extracted_text = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area")
+        page.add(extracted_text)
+        img_text = get_image_text(img_path)
+        if len(img_text) < 2:
+            extracted_text.value = img_text[0]
+        else:
+            page.remove(extracted_text)
+            for word_group in img_text:
+                group_text = ft.TextField(label='Extracted text', read_only=True, value=word_group)
+                page.add(group_text)
+        page.update()
+        
         page.update()
     def get_area(e):
         page.window.opacity = 0.01
