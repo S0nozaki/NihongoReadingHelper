@@ -14,7 +14,7 @@ def gui(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     
     def get_selected_area_text(img_path):
-        tb = ft.TextField(label='Area', read_only=True, value="Extracting text from selected area")
+        tb = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area")
         page.add(tb)
         tb.value = get_image_text(img_path)
         page.update()
@@ -46,7 +46,7 @@ def gui(page: ft.Page):
                 return True
         with Listener(on_click=on_click) as listener:
             listener.join()
-    button = ft.Button("Select area to screenshot", on_click=get_area)
+    button = ft.Button("Select area to extract text", on_click=get_area)
     page.add(button)
 
 ft.app(gui)
