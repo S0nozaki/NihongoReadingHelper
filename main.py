@@ -14,7 +14,7 @@ def gui(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     
     def get_selected_area(img):
-        tb = ft.TextField(label='Area', read_only=True, value=get_image_text(config.IMG_PATH))
+        tb = ft.TextField(label='Area', read_only=True, value=get_image_text(img))
         page.add(tb)
     def get_area(e):
         page.window.opacity = 0.01
@@ -39,7 +39,9 @@ def gui(page: ft.Page):
                 page.update()
                 area = ImageGrab.grab(bbox=(area_start[0], area_start[1], area_final[0], area_final[1]))
                 area.save(config.SAVE_TO_PATH, "JPEG")
-                return False
+                listener.stop()
+                get_selected_area(config.SAVE_TO_PATH)
+                return True
         with Listener(on_click=on_click) as listener:
             listener.join()
     button = ft.Button("Select area to screenshot", on_click=get_area)
