@@ -63,15 +63,10 @@ def gui(page: ft.Page):
     button = ft.Button("Select area to extract text", on_click=get_area)
 
     def get_kanji():
-        text_field_to_inspect = ""
-        text_fields = [field for field in page.controls if ('TextField' in str(type(field)))]
-        for field in text_fields:
-            text_field_to_inspect += field.value
-        
-        if text_field_to_inspect == "":
+        if extracted_text.value == "":
             return False
 
-        kanji_to_show = extract_all_kanji(text_field_to_inspect)
+        kanji_to_show = extract_all_kanji(extracted_text.value)
         
         kanji_cards = []
         for kanji in kanji_to_show:
