@@ -30,6 +30,7 @@ def gui(page: ft.Page):
         page.update()
         img_text = ''.join(get_image_text(img_path))
         extracted_text.value = img_text
+        get_kanji()
         page.update()
 
     def get_area(e):
@@ -60,7 +61,7 @@ def gui(page: ft.Page):
             listener.join()
     button = ft.Button("Select area to extract text", on_click=get_area)
 
-    def get_kanji(e):
+    def get_kanji(e=False):
         text_field_to_inspect = ""
         text_fields = [field for field in page.controls if ('TextField' in str(type(field)))]
         for field in text_fields:
