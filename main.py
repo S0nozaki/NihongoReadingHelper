@@ -61,7 +61,7 @@ def gui(page: ft.Page):
             listener.join()
     button = ft.Button("Select area to extract text", on_click=get_area)
 
-    def get_kanji(e=False):
+    def get_kanji():
         text_field_to_inspect = ""
         text_fields = [field for field in page.controls if ('TextField' in str(type(field)))]
         for field in text_fields:
@@ -88,8 +88,7 @@ def gui(page: ft.Page):
         page.add(ft.GridView(expand=1, runs_count=8, spacing=5, controls=kanji_cards))
         page.update()
 
-    kanji_button = ft.Button("Extract kanji from selected text", on_click=get_kanji)
-    page.add(button, kanji_button)
+    page.add(button)
 
 
 def extract_all_kanji(word):
