@@ -81,7 +81,6 @@ def gui(page: ft.Page):
                 border_radius=10,
             ))
         kanji_card_grid.controls = kanji_cards
-        page.update()
 
     page.add(button, extracted_text, kanji_card_grid)
 
