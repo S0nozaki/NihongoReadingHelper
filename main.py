@@ -4,6 +4,7 @@ import flet as ft
 from pynput.mouse import Listener
 from PIL import ImageGrab
 import json
+import asyncio
 
 def load_json(filename):
     with open(filename, encoding="utf-8") as f:
@@ -50,32 +51,30 @@ def gui(page: ft.Page):
         get_kanji()
         page.update()
 
-    def get_area(e):
+    async def get_area(e):
+        def on_click(x, y, button, pressed):
+            if button == button.left:
+                if pressed:
+                    screenshot_initial_point.append(x)
+                    screenshot_initial_point.append(y)
+                if not pressed:
+                    area_final = [x,y]
+                    area = ImageGrab.grab(bbox=(screenshot_initial_point[0], screenshot_initial_point[1], area_final[0], area_final[1]))
+                    area.save(config.SAVE_TO_PATH, "JPEG")
+                    get_selected_area_text(config.SAVE_TO_PATH)
+                    page.window.opacity = 1.0
+                    page.window.full_screen = False
+                    page.update()
+                    return False
         page.window.opacity = 0.01
         #for some reason 0.0 opacity not only makes it invisible, but treates it as non-existant
         page.window.full_screen = True
         page.update()
-        area_start = [0,0]
-        area_final = [0,0]
-        def on_click(x, y, button, pressed):
-            if button == button.left:
-                if pressed:
-                    area_start[0] = x
-                    area_start[1] = y
-                else:
-                    area_final[0] = x
-                    area_final[1] = y
-            if not pressed:
-                listener.stop()
-                page.window.full_screen = False
-                page.window.opacity = 1.0
-                page.update()
-                area = ImageGrab.grab(bbox=(area_start[0], area_start[1], area_final[0], area_final[1]))
-                area.save(config.SAVE_TO_PATH, "JPEG")
-                get_selected_area_text(config.SAVE_TO_PATH)
-                return True
+        screenshot_initial_point = []
+        await asyncio.sleep(1)
         with Listener(on_click=on_click) as listener:
             listener.join()
+        
     button = ft.Button("Select area to extract text", on_click=get_area)
 
     def get_kanji():
@@ -88,7 +87,7 @@ def gui(page: ft.Page):
         for kanji in kanji_to_show:
             kanji_cards.append(ft.Container(
                 content=ft.Text(kanji),
-                alignment=ft.alignment.center,
+                alignment=ft.Alignment.CENTER,
                 bgcolor=ft.Colors.AMBER,
                 width=150,
                 height=150,
