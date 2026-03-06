@@ -86,9 +86,14 @@ def gui(page: ft.Page):
         kanji_cards = []
         for kanji in kanji_to_show:
             kanji_cards.append(ft.Container(
-                content=ft.Text(kanji),
+                content=ft.Text(kanji, theme_style=ft.TextThemeStyle.DISPLAY_SMALL),
                 alignment=ft.Alignment.CENTER,
-                bgcolor=ft.Colors.AMBER,
+                gradient=ft.LinearGradient(
+                    begin=ft.Alignment.TOP_LEFT,
+                    end=ft.Alignment.BOTTOM_RIGHT,
+                    tile_mode=ft.GradientTileMode.MIRROR,
+                    colors=[ft.Colors.PURPLE_600, ft.Colors.DEEP_PURPLE_900],
+                ),
                 width=150,
                 height=150,
                 margin=10,
