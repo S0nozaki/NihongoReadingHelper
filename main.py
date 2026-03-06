@@ -22,6 +22,7 @@ def get_image_text(img_path):
 
 def gui(page: ft.Page):
     page.title = "Nihongo Reading Helper"
+    page.theme_mode = ft.ThemeMode.DARK
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     extracted_text = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area", visible=False)
     kanji_card_grid = ft.GridView(expand=1, runs_count=8, spacing=5, controls=None)
