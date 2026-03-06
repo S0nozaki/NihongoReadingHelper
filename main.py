@@ -24,8 +24,23 @@ def gui(page: ft.Page):
     page.title = "Nihongo Reading Helper"
     page.theme_mode = ft.ThemeMode.DARK
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.MainAxisAlignment.CENTER
     extracted_text = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area", visible=False)
     kanji_card_grid = ft.GridView(expand=1, runs_count=8, spacing=5, controls=None)
+
+    app_title_field = ft.Container(
+        content=ft.Column(
+            controls=[ft.Text(value="Nihongo Reading Helper", theme_style=ft.TextThemeStyle.DISPLAY_MEDIUM, weight=ft.FontWeight.BOLD),
+                      ft.Text("Stuck on an unknown kanji while reading? Just select an area of the screen and get the kanji present!")],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+        gradient=ft.LinearGradient(
+            begin=ft.Alignment.TOP_LEFT,
+            end=ft.Alignment.BOTTOM_RIGHT,
+            tile_mode=ft.GradientTileMode.MIRROR,
+            colors=[ft.Colors.PURPLE_600, ft.Colors.DEEP_PURPLE_900],
+        ),
+        padding=20
+    )
     
     def get_selected_area_text(img_path):
         extracted_text.visible = True
@@ -83,7 +98,7 @@ def gui(page: ft.Page):
             ))
         kanji_card_grid.controls = kanji_cards
 
-    page.add(button, extracted_text, kanji_card_grid)
+    page.add(app_title_field, button, extracted_text, kanji_card_grid)
 
 
 def extract_all_kanji(word):
