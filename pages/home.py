@@ -96,6 +96,7 @@ def home_page(page):
                 margin=10,
                 padding=10,
                 border_radius=10,
+                on_click=lambda e: asyncio.create_task(page.push_route("/kanji_detail"))
             ))
         kanji_card_grid.controls = kanji_cards
 

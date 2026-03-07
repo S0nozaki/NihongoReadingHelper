@@ -1,5 +1,6 @@
 import flet as ft
 from pages.home import home_page
+from pages.kanji_detail import kanji_detail
 
 async def main(page: ft.Page):
     page.title = "Nihongo Reading Helper"
@@ -12,6 +13,8 @@ async def main(page: ft.Page):
         page.views.clear()
         if page.route == "/":
             page.views.append(home_page(page))
+        elif page.route == "/kanji_detail":
+            page.views.append(kanji_detail(page))
         page.update()
 
     page.on_route_change = route_change
