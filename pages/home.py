@@ -75,6 +75,11 @@ def home_page(page):
     button = ft.Button("Select area to extract text", on_click=get_area)
 
     def get_kanji():
+        def kanji_clicked(e):
+            observed_kanji = e.control.content.value
+            redirect = lambda _: asyncio.create_task(page.push_route("/kanji_detail/" + observed_kanji))
+            redirect(1)
+
         if extracted_text.value == "":
             return False
 
@@ -96,7 +101,7 @@ def home_page(page):
                 margin=10,
                 padding=10,
                 border_radius=10,
-                on_click=lambda e: asyncio.create_task(page.push_route("/kanji_detail"))
+                on_click=kanji_clicked
             ))
         kanji_card_grid.controls = kanji_cards
 
