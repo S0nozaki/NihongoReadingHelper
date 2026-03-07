@@ -17,7 +17,7 @@ element2kanji = load_json("element2kanji.json")
 radical2kanji = load_json("radical2kanji.json")
 
 def home_page(page):
-    extracted_text = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area", visible=False)
+    extracted_text = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area", visible=False, width=700)
     kanji_card_grid = ft.GridView(expand=1, runs_count=8, spacing=5, controls=None)
 
     app_title_field = ft.Container(
@@ -31,7 +31,8 @@ def home_page(page):
             tile_mode=ft.GradientTileMode.MIRROR,
             colors=[ft.Colors.PURPLE_600, ft.Colors.DEEP_PURPLE_900],
         ),
-        padding=20
+        padding=20,
+        width=700
     )
 
     def get_image_text(img_path):
