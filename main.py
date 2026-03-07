@@ -21,7 +21,7 @@ def get_image_text(img_path):
     result = reader.readtext(img_path, detail=0)
     return result
 
-def gui(page: ft.Page):
+def main(page: ft.Page):
     page.title = "Nihongo Reading Helper"
     page.theme_mode = ft.ThemeMode.DARK
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
@@ -112,4 +112,4 @@ def extract_all_kanji(word):
             kanji_list.append(letter)
     return kanji_list
 
-ft.app(gui)
+ft.run(main)
