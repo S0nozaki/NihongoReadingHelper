@@ -14,7 +14,9 @@ async def main(page: ft.Page):
         if page.route == "/":
             page.views.append(home_page(page))
         elif page.route.startswith("/kanji_detail/"):
-            page.views.append(kanji_detail(page, page.route.split("/")[2]))
+            page.views.append(kanji_detail(page, page.route.split("/")[2],page.route.split("/")[3]))
+        elif page.route.startswith("/searched_sentence/"):
+            page.views.append(home_page(page,page.route.split("/")[2]))
         page.update()
 
     page.on_route_change = route_change

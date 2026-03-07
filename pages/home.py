@@ -16,7 +16,7 @@ kanji2radical = load_json("kanji2radical.json")
 element2kanji = load_json("element2kanji.json")
 radical2kanji = load_json("radical2kanji.json")
 
-def home_page(page):
+def home_page(page, searched_sentence = ""):
     extracted_text = ft.TextField(label='Extracted text', read_only=True, value="Extracting text from selected area", visible=False, width=700)
     kanji_card_grid = ft.GridView(expand=1, runs_count=8, spacing=5, controls=None)
 
@@ -77,7 +77,7 @@ def home_page(page):
     def get_kanji():
         def kanji_clicked(e):
             observed_kanji = e.control.content.value
-            redirect = lambda _: asyncio.create_task(page.push_route("/kanji_detail/" + observed_kanji))
+            redirect = lambda _: asyncio.create_task(page.push_route("/kanji_detail/" + observed_kanji + "/" + extracted_text.value))
             redirect(1)
 
         if extracted_text.value == "":
@@ -104,6 +104,12 @@ def home_page(page):
                 on_click=kanji_clicked
             ))
         kanji_card_grid.controls = kanji_cards
+
+    if(searched_sentence != ""):
+        extracted_text.value = searched_sentence
+        extracted_text.visible = True
+        get_kanji()
+        page.update()
 
     return ft.View(
         route = "/",

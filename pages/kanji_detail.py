@@ -12,7 +12,7 @@ kanji2radical = load_json("kanji2radical.json")
 element2kanji = load_json("element2kanji.json")
 radical2kanji = load_json("radical2kanji.json")
 
-def kanji_detail(page, kanji: str):
+def kanji_detail(page, kanji: str, searched_sentence: str):
     standard_gradient = ft.LinearGradient(
         begin=ft.Alignment.TOP_LEFT,
         end=ft.Alignment.BOTTOM_RIGHT,
@@ -20,7 +20,7 @@ def kanji_detail(page, kanji: str):
         colors=[ft.Colors.PURPLE_600, ft.Colors.DEEP_PURPLE_900],
     )
 
-    go_back_button = ft.IconButton(icon=ft.Icons.ARROW_BACK, on_click=lambda e: asyncio.create_task(page.push_route("/")), align=ft.Alignment.TOP_LEFT)
+    go_back_button = ft.IconButton(icon=ft.Icons.ARROW_BACK, on_click=lambda e: asyncio.create_task(page.push_route("/searched_sentence/" + searched_sentence)), align=ft.Alignment.TOP_LEFT)
 
     kanji_header = ft.Container(
         content=ft.Text(value = kanji, theme_style=ft.TextThemeStyle.DISPLAY_LARGE, align=ft.Alignment.CENTER),
