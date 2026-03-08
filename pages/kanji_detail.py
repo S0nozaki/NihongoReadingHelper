@@ -11,6 +11,7 @@ kanji2element = load_json("kanji2element.json")
 kanji2radical = load_json("kanji2radical.json")
 element2kanji = load_json("element2kanji.json")
 radical2kanji = load_json("radical2kanji.json")
+kanjiapi = load_json("kanjiapi_full.json")
 
 def kanji_detail(page, kanji: str, searched_sentence: str):
     standard_gradient = ft.LinearGradient(
@@ -27,13 +28,16 @@ def kanji_detail(page, kanji: str, searched_sentence: str):
         gradient=standard_gradient,
         padding = 20
     )
-
     kanji_readings = ft.Container(
         content=ft.Row(
             controls=[
-                ft.TextField("Kun yomi"),
-                ft.TextField("On yomi")
-            ]
+                ft.TextField(kanjiapi["kanjis"][kanji]["kun_readings"], label="Kun readings", read_only=True, multiline=True),
+                ft.TextField(kanjiapi["kanjis"][kanji]["on_readings"], label="On readings", read_only=True, multiline=True),
+                ft.TextField(kanjiapi["kanjis"][kanji]["name_readings"], label="Name readings", read_only=True, multiline=True),
+                ft.TextField(kanjiapi["kanjis"][kanji]["meanings"], label="Meanings", read_only=True, multiline=True),
+                ft.TextField(kanjiapi["kanjis"][kanji]["jlpt"], label="JLPT level", read_only=True, multiline=True)
+            ],
+            wrap=True
         ),
     )
 
