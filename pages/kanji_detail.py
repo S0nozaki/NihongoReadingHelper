@@ -7,11 +7,9 @@ def load_json(filename):
         d = json.load(f)
     return d
 
-kanji2element = load_json("kanji2element.json")
-kanji2radical = load_json("kanji2radical.json")
-element2kanji = load_json("element2kanji.json")
-radical2kanji = load_json("radical2kanji.json")
 kanjiapi = load_json("kanjiapi_full.json")
+radkfile = load_json("radkfile-3.6.2.json")
+kradfile = load_json("kradfile-3.6.2.json")
 
 def kanji_detail(page, kanji: str, searched_sentence: str):
     standard_gradient = ft.LinearGradient(
@@ -21,6 +19,8 @@ def kanji_detail(page, kanji: str, searched_sentence: str):
         colors=[ft.Colors.PURPLE_600, ft.Colors.DEEP_PURPLE_900],
     )
 
+    kanji_radicals_selected = []
+
     go_back_button = ft.IconButton(icon=ft.Icons.ARROW_BACK, on_click=lambda e: asyncio.create_task(page.push_route("/searched_sentence/" + searched_sentence)), align=ft.Alignment.TOP_LEFT)
 
     kanji_header = ft.Container(
@@ -28,6 +28,7 @@ def kanji_detail(page, kanji: str, searched_sentence: str):
         gradient=standard_gradient,
         padding = 20
     )
+
     kanji_readings = ft.Container(
         content=ft.Row(
             controls=[
@@ -35,14 +36,16 @@ def kanji_detail(page, kanji: str, searched_sentence: str):
                 ft.TextField(kanjiapi["kanjis"][kanji]["on_readings"], label="On readings", read_only=True, multiline=True),
                 ft.TextField(kanjiapi["kanjis"][kanji]["name_readings"], label="Name readings", read_only=True, multiline=True),
                 ft.TextField(kanjiapi["kanjis"][kanji]["meanings"], label="Meanings", read_only=True, multiline=True),
-                ft.TextField(kanjiapi["kanjis"][kanji]["jlpt"], label="JLPT level", read_only=True, multiline=True)
+                ft.TextField(kanjiapi["kanjis"][kanji]["jlpt"], label="JLPT level", read_only=True, multiline=True),
+                ft.TextField(kradfile["kanji"][kanji], label="Kanji Parts", read_only=True, multiline=True)
             ],
             wrap=True
         ),
     )
 
     kanji_parts = ft.Row(
-        controls=[]
+        controls=[],
+        wrap=True
     )
 
     kanji_parts_container = ft.Container(
@@ -52,16 +55,22 @@ def kanji_detail(page, kanji: str, searched_sentence: str):
 
     def generate_kanji_parts():
         kanji_parts_generated = []
-        for part in kanji2element[kanji]:
+        selected_gradient = None
+        for radical in radkfile["radicals"].keys():
+            if radical in kradfile["kanji"][kanji]:
+                selected_gradient = standard_gradient
+                kanji_radicals_selected.append(radical)
+            else:
+                selected_gradient = None
             kanji_parts_generated.append(ft.Container(
-                    content=ft.Text(value=part),
-                    gradient=standard_gradient,
-                    padding=10
+                    content=ft.Text(value=radical),
+                    padding=10,
+                    gradient=selected_gradient
                 )
             )
         kanji_parts.controls = kanji_parts_generated
     
-    wrong_kanji_button = ft.Button("Was it a different kanji?", on_click=generate_kanji_parts)
+    wrong_kanji_button = ft.Button("Was it a different kanji? Adjust the radicals!", on_click=generate_kanji_parts)
 
     return ft.View(
         route="/kanji_detail",
